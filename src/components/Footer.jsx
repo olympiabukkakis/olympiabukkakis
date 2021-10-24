@@ -113,7 +113,7 @@ class Footer extends Component {
             <a
               rel="noopener noreferrer"
               className="text-nowrap"
-              href="https://www.instagram.com/collectiveanxiety/"
+              href="https://vincentreynaud.de/"
               target="_blank"
             >
               Vincent Reynaud
