@@ -14,7 +14,7 @@ class Index extends Component {
       hero: null,
       heroBrand: null,
       navBrand: null,
-      navLinks: null
+      navLinks: null,
     };
   }
 
@@ -23,15 +23,15 @@ class Index extends Component {
     this.setState({
       hero: document.getElementById("hero"),
       navBrand: document.querySelector(".navbar-brand"),
-      navLinks: document.querySelectorAll(".nav-link")
+      navLinks: document.querySelectorAll(".nav-link"),
     });
   }
 
   handleScroll = () => {
     if (window.scrollY > 1) {
-      this.state.navLinks.forEach(el => this.show(el));
+      this.state.navLinks.forEach((el) => this.show(el));
     } else {
-      this.state.navLinks.forEach(el => this.hide(el));
+      this.state.navLinks.forEach((el) => this.hide(el));
     }
 
     if (window.scrollY > this.state.hero.scrollHeight - 800) {
@@ -41,29 +41,30 @@ class Index extends Component {
     }
   };
 
-  scaleDown = el => {
+  scaleDown = (el) => {
     if (el.classList.contains("scale-up") || !el.classList.contains("scale-down")) {
       el.classList.remove("scale-up");
       el.classList.add("scale-down");
+      localStorage.setItem("navbarBrand_mode", "down");
     }
   };
 
-  scaleUp = el => {
+  scaleUp = (el) => {
     if (el.classList.contains("scale-down")) {
       el.classList.remove("scale-down");
       el.classList.add("scale-up");
+      localStorage.setItem("navbarBrand_mode", "up");
     }
   };
 
-  // now useless..
-  hide = el => {
+  hide = (el) => {
     if (el.classList.contains("show") || !el.classList.contains("hide")) {
       el.classList.remove("show");
       el.classList.add("hide");
     }
   };
 
-  show = el => {
+  show = (el) => {
     if (el.classList.contains("hide")) {
       el.classList.remove("hide");
       el.classList.add("show");

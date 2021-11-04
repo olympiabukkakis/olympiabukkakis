@@ -9,17 +9,17 @@ class Navigation extends Component {
     super(props);
 
     this.state = {
-      isOpen: false
+      isOpen: false,
     };
   }
 
   toggle = () => {
     this.setState({
-      isOpen: !this.state.isOpen
+      isOpen: !this.state.isOpen,
     });
   };
 
-  toggleActiveClass = e => {
+  toggleActiveClass = (e) => {
     e.target.classList.includes("active") ? e.target.classList.remove("active") : e.target.classList.add("active");
   };
 
@@ -34,7 +34,7 @@ class Navigation extends Component {
     return (
       <Navbar expand="xl" className="flex-column align-items-start">
         <div className="d-flex justify-content-between align-items-center w-100">
-          <NavbarBrand style={scaleUp && { fontSize: "7.2rem", left: "12vw" }} href="/about">
+          <NavbarBrand style={scaleUp ? { fontSize: "7.2rem", left: "12vw" } : {}} href="/about">
             {title}
           </NavbarBrand>
           <NavbarToggler className="nav-link top right" onClick={this.toggle}>

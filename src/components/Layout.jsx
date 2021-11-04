@@ -16,7 +16,7 @@ class Layout extends Component {
 
     this.state = {
       scrollY: 0,
-      navLinks: null
+      navLinks: null,
     };
   }
 
@@ -34,7 +34,7 @@ class Layout extends Component {
     return (
       <StaticQuery
         query={query}
-        render={data => {
+        render={(data) => {
           return (
             <div className={classnames({ layout: true, "theme-dark": !themeLight, "theme-light": themeLight })}>
               <div className="row">
@@ -43,7 +43,7 @@ class Layout extends Component {
                     title={data.site.siteMetadata.title}
                     handleScroll={this.handleScroll}
                     hideNav={hideNav}
-                    scaleUp={scaleUp}
+                    scaleUp={scaleUp && localStorage.getItem("navbarBrand_mode") === "up"}
                   />
                 </div>
                 <div className="col-main col-xl-8">
@@ -74,7 +74,7 @@ const query = graphql`
 `;
 
 Layout.propTypes = {
-  children: PropTypes.node.isRequired
+  children: PropTypes.node.isRequired,
 };
 
 export default Layout;
