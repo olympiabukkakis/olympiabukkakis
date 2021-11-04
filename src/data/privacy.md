@@ -32,7 +32,7 @@ Olympia Bukkakis takes the following precautionary measures to ensure the securi
 
 You acknowledge that the transmission of information over the internet is inherently insecure, and we cannot guarantee the security of data sent over the internet.
 
-## Disclosure of your data? 
+## Disclosure of your data
 The Company may disclose your personal data in the good faith belief that such action is necessary to:
 * Comply with a legal obligation;
 * Protect and defend the rights or property of Olympia Bukkakis;
