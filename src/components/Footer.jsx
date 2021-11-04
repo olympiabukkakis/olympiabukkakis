@@ -1,3 +1,4 @@
+import { Link } from "gatsby";
 import React, { Component } from "react";
 
 import "../scss/Footer.scss";
@@ -11,27 +12,27 @@ class Footer extends Component {
       footer: null,
       updated: null,
       touchStartX: null,
-      touchStartY: null
+      touchStartY: null,
     };
   }
 
   componentDidMount() {
     this.setState({ footer: document.getElementById("footer") });
 
-    window.onwheel = e => {
+    window.onwheel = (e) => {
       this.handleScroll(e);
     };
 
-    window.ontouchstart = e => {
+    window.ontouchstart = (e) => {
       this.handleTouchStart(e);
     };
 
-    window.ontouchmove = e => {
+    window.ontouchmove = (e) => {
       this.handleTouchMove(e);
     };
   }
 
-  handleScroll = e => {
+  handleScroll = (e) => {
     const xMove = e.deltaX;
     const yMove = e.deltaY;
 
@@ -49,14 +50,14 @@ class Footer extends Component {
     this.setState({ scrollDown: null });
   };
 
-  handleTouchStart = e => {
+  handleTouchStart = (e) => {
     this.setState({
       touchStartX: e.touches[0].screenX,
-      touchStartY: e.touches[0].screenY
+      touchStartY: e.touches[0].screenY,
     });
   };
 
-  handleTouchMove = e => {
+  handleTouchMove = (e) => {
     if (!this.state.touchStartY) return;
 
     const xUp = e.touches[0].screenX;
@@ -87,14 +88,14 @@ class Footer extends Component {
     // this.setState({ updated: false });
   };
 
-  show = el => {
+  show = (el) => {
     if (el.classList.contains("footer-hide")) {
       el.classList.remove("footer-hide");
       el.classList.add("footer-show");
     }
   };
 
-  hide = el => {
+  hide = (el) => {
     if (el.classList.contains("footer-show") || !el.classList.contains("footer-hide")) {
       el.classList.remove("footer-show");
       el.classList.add("footer-hide");
@@ -105,17 +106,15 @@ class Footer extends Component {
     return (
       <footer className="w-100 footer-hide row justify-content-between" id="footer">
         <p className="mb-1 col-12 col-sm text-nowrap">
-          <small>Olympia Bukkakis &copy; {new Date().getFullYear()}</small>
+          <small>
+            Olympia Bukkakis &copy; {new Date().getFullYear()} &middot; <Link to="/privacy">Privacy Policy</Link>{" "}
+            &middot; <Link to="/imprint">Imprint</Link>
+          </small>
         </p>
         <p className="footer-credit">
           <small>
             Website by{" "}
-            <a
-              rel="noopener noreferrer"
-              className="text-nowrap"
-              href="https://vincentreynaud.de/"
-              target="_blank"
-            >
+            <a rel="noopener noreferrer" className="text-nowrap" href="https://vincentreynaud.de/" target="_blank">
               Vincent Reynaud
             </a>
           </small>
