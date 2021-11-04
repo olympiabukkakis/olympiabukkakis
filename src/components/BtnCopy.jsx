@@ -3,14 +3,14 @@ import classnames from "classnames";
 
 class BtnCopy extends Component {
   state = {
-    tooltip: null
+    tooltip: null,
   };
-  
+
   componentDidMount() {
     this.state.tooltip = document.querySelector(".tooltip");
   }
 
-  toggle = el => {
+  toggle = (el) => {
     this.show(el);
     setTimeout(() => {
       this.hide(el);
@@ -18,14 +18,14 @@ class BtnCopy extends Component {
   };
 
   // duplicates !!!!
-  hide = el => {
+  hide = (el) => {
     if (el.classList.contains("show") || !el.classList.contains("hide")) {
       el.classList.remove("show");
       el.classList.add("hide");
     }
   };
 
-  show = el => {
+  show = (el) => {
     if (el.classList.contains("hide")) {
       el.classList.remove("hide");
       el.classList.add("show");
@@ -40,16 +40,19 @@ class BtnCopy extends Component {
         <button
           id="btn-copy"
           onClick={() => {
-            console.log(copyItem)
+            console.log(copyItem);
             this.toggle(this.state.tooltip);
-            navigator.clipboard.writeText(copyItem).then(() => console.log("copied!"), err => console.error(err));
+            navigator.clipboard.writeText(copyItem).then(
+              () => console.log("copied!"),
+              (err) => console.error(err)
+            );
           }}
         >
           {children}
         </button>
-        <div className="tooltip hide">
+        <span className="tooltip hide">
           <small>Copied to clipboard!</small>
-        </div>
+        </span>
       </>
     );
   }
