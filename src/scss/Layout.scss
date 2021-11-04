@@ -105,7 +105,7 @@ p {
   }
 
   .navbar {
-    background: transparent;
+    background: linear-gradient(rgba($white, 0.95) 25%, rgba($white, 0.7) 50%, rgba($white, 0.5) 75%, transparent);
   }
 
   .navbar-brand {
