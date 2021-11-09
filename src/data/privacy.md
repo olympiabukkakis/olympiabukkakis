@@ -3,7 +3,7 @@ type: "privacy"
 ---
 
 # Privacy Policy
-The privacy of our website visitors is very important to us, and we are committed to safeguarding it. This privacy policy will explain how Olympia Bukkakis uses the personal data we collect from you when you use our website.
+The privacy of olympiabukkakis.com visitors is very important to us, and we are committed to safeguarding it. This privacy policy will explain how our organisation, also referred to here as "Olympia Bukkakis", uses the personal data collected from you when you use our website.
 
 ## What data do we collect?
 Olympia Bukkakis collects the following data:
