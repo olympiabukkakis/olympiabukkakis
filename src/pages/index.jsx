@@ -1,10 +1,10 @@
-import React, { Component } from "react";
-import { Link, graphql } from "gatsby";
+import React, { Component } from 'react';
+import { Link, graphql } from 'gatsby';
 
-import Layout from "../components/Layout";
-import SEO from "../components/SEO";
-import Image from "gatsby-image";
-import anime from "../../node_modules/animejs/lib/anime.es.js";
+import Layout from '../components/Layout';
+import SEO from '../components/SEO';
+import Image from 'gatsby-image';
+import anime from '../../node_modules/animejs/lib/anime.es.js';
 
 class Index extends Component {
   constructor(props) {
@@ -20,12 +20,25 @@ class Index extends Component {
 
   // not sure if getting the navBrand here is a good idea...
   componentDidMount() {
-    this.setState({
-      hero: document.getElementById("hero"),
-      navBrand: document.querySelector(".navbar-brand"),
-      navLinks: document.querySelectorAll(".nav-link"),
-    });
+    this.setState(
+      {
+        hero: document.getElementById('hero'),
+        navBrand: document.querySelector('.navbar-brand'),
+        navLinks: document.querySelectorAll('.nav-link'),
+      },
+      () => {
+        if (this.isNavbarBrandScaledDown()) {
+          localStorage.setItem('navbarBrand_mode', 'down');
+        } else {
+          localStorage.setItem('navbarBrand_mode', 'up');
+        }
+      }
+    );
   }
+
+  isNavbarBrandScaledDown = () => {
+    return window.scrollY > this.state.hero.scrollHeight - 800;
+  };
 
   handleScroll = () => {
     if (window.scrollY > 1) {
@@ -34,7 +47,7 @@ class Index extends Component {
       this.state.navLinks.forEach((el) => this.hide(el));
     }
 
-    if (window.scrollY > this.state.hero.scrollHeight - 800) {
+    if (this.isNavbarBrandScaledDown()) {
       this.scaleDown(this.state.navBrand);
     } else {
       this.scaleUp(this.state.navBrand);
@@ -42,32 +55,32 @@ class Index extends Component {
   };
 
   scaleDown = (el) => {
-    if (el.classList.contains("scale-up") || !el.classList.contains("scale-down")) {
-      el.classList.remove("scale-up");
-      el.classList.add("scale-down");
-      localStorage.setItem("navbarBrand_mode", "down");
+    if (el.classList.contains('scale-up') || !el.classList.contains('scale-down')) {
+      el.classList.remove('scale-up');
+      el.classList.add('scale-down');
+      localStorage.setItem('navbarBrand_mode', 'down');
     }
   };
 
   scaleUp = (el) => {
-    if (el.classList.contains("scale-down")) {
-      el.classList.remove("scale-down");
-      el.classList.add("scale-up");
-      localStorage.setItem("navbarBrand_mode", "up");
+    if (el.classList.contains('scale-down')) {
+      el.classList.remove('scale-down');
+      el.classList.add('scale-up');
+      localStorage.setItem('navbarBrand_mode', 'up');
     }
   };
 
   hide = (el) => {
-    if (el.classList.contains("show") || !el.classList.contains("hide")) {
-      el.classList.remove("show");
-      el.classList.add("hide");
+    if (el.classList.contains('show') || !el.classList.contains('hide')) {
+      el.classList.remove('show');
+      el.classList.add('hide');
     }
   };
 
   show = (el) => {
-    if (el.classList.contains("hide")) {
-      el.classList.remove("hide");
-      el.classList.add("show");
+    if (el.classList.contains('hide')) {
+      el.classList.remove('hide');
+      el.classList.add('show');
     }
   };
 
@@ -78,37 +91,37 @@ class Index extends Component {
       <>
         <SEO />
         <Layout handleScroll={this.handleScroll} hideNav={true} scaleUp={true}>
-          <section id="hero" />
-          <section id="work" className="container container-sm">
+          <section id='hero' />
+          <section id='work' className='container container-sm'>
             {work.edges.map(({ node }) => {
-              const workRegex = new RegExp(node.frontmatter.id, "i");
+              const workRegex = new RegExp(node.frontmatter.id, 'i');
               let [picture] = pictures.edges.filter(
                 ({ node }) => node.base.match(workRegex) && node.base.match(/cover/i)
               );
               if (!picture) [picture] = pictures.edges.filter(({ node }) => node.base.match(workRegex));
 
               return (
-                <div className="work" key={node.id}>
+                <div className='work' key={node.id}>
                   <Link to={node.fields.slug}>
-                    {typeof picture !== "undefined" && (
+                    {typeof picture !== 'undefined' && (
                       <Image
                         fluid={picture.node.childImageSharp.fluid}
-                        alt={node.frontmatter.title + " picture"}
-                        style={{ width: "100%", height: "50vmin", marginBottom: "2rem" }}
+                        alt={node.frontmatter.title + ' picture'}
+                        style={{ width: '100%', height: '50vmin', marginBottom: '2rem' }}
                       />
                     )}
                   </Link>
 
-                  <h2 className="work-title">
+                  <h2 className='work-title'>
                     <Link to={node.fields.slug}>{node.frontmatter.title}</Link>
-                    <small className="work-date">
-                      {" "}
+                    <small className='work-date'>
+                      {' '}
                       &middot; {node.frontmatter.startDate}
-                      {node.frontmatter.endDate !== "" && <span> &ndash; {node.frontmatter.endDate}</span>}
+                      {node.frontmatter.endDate !== '' && <span> &ndash; {node.frontmatter.endDate}</span>}
                     </small>
                   </h2>
 
-                  <p className="work-description">{node.frontmatter.description}</p>
+                  <p className='work-description'>{node.frontmatter.description}</p>
                 </div>
               );
             })}

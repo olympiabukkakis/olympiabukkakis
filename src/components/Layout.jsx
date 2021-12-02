@@ -1,14 +1,14 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { StaticQuery, graphql } from "gatsby";
-import classnames from "classnames";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { StaticQuery, graphql } from 'gatsby';
+import classnames from 'classnames';
 
-import Navigation from "./Navigation";
-import Footer from "./Footer";
-import ToTop from "./ToTop";
+import Navigation from './Navigation';
+import Footer from './Footer';
+import ToTop from './ToTop';
 
-import "../scss/Layout.scss";
-import "../scss/Navigation.scss";
+import '../scss/Layout.scss';
+import '../scss/Navigation.scss';
 
 class Layout extends Component {
   constructor(props) {
@@ -28,6 +28,20 @@ class Layout extends Component {
     };
   }
 
+  isNavbarBrandUp = () => {
+    if (typeof window !== 'undefined') {
+      console.log(window.scrollY);
+      const lsState = localStorage.getItem('navbarBrand_mode');
+      if (!lsState) {
+        return true;
+      } else {
+        return lsState === 'up';
+      }
+    } else {
+      return false;
+    }
+  };
+
   render() {
     const { children, themeLight, hideNav, scaleUp } = this.props;
 
@@ -36,22 +50,22 @@ class Layout extends Component {
         query={query}
         render={(data) => {
           return (
-            <div className={classnames({ layout: true, "theme-dark": !themeLight, "theme-light": themeLight })}>
-              <div className="row">
-                <div className="col-nav col-xl-4">
+            <div className={classnames({ layout: true, 'theme-dark': !themeLight, 'theme-light': themeLight })}>
+              <div className='row'>
+                <div className='col-nav col-xl-4'>
                   <Navigation
                     title={data.site.siteMetadata.title}
                     handleScroll={this.handleScroll}
                     hideNav={hideNav}
-                    scaleUp={scaleUp && localStorage.getItem("navbarBrand_mode") === "up"}
+                    scaleUp={scaleUp && this.isNavbarBrandUp()}
                   />
                 </div>
-                <div className="col-main col-xl-8">
-                  <main className="main">{children}</main>
+                <div className='col-main col-xl-8'>
+                  <main className='main'>{children}</main>
                   {this.state.scrollY > 600 && <ToTop />}
                 </div>
               </div>
-              <div className="row">
+              <div className='row'>
                 <Footer authors={data.site.siteMetadata.author} />
               </div>
             </div>
