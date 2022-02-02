@@ -35,7 +35,6 @@ export const isNavbarBrandUp = (boo = false) => {
   if (boo === false) {
     return false;
   }
-  console.log('trigger isNavbarBrandUp');
   if (typeof window !== 'undefined') {
     const lsState = localStorage.getItem('navbarBrand_mode');
     if (!lsState) {

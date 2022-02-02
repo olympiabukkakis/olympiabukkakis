@@ -30,7 +30,6 @@ class Layout extends Component {
 
   render() {
     const { children, themeLight, hideNav, scaleUp } = this.props;
-    console.log('scaleUp', scaleUp);
 
     return (
       <StaticQuery

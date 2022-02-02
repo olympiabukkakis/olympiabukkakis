@@ -25,17 +25,10 @@ class Index extends Component {
     const navBrand = document.querySelector('.navbar-brand');
     const navLinks = document.querySelectorAll('.nav-link');
 
-    // if (window.scrollY < 50 && window.location.pathname == '/') {
-    //   console.log('trigger scale up when on landing');
-    //   this.scaleUp(navBrand);
-    // }
-
     if (this.isNavbarBrandScaledDown(hero)) {
       localStorage.setItem('navbarBrand_mode', 'down');
-      // this.scaleDown(navBrand);
     } else {
       localStorage.setItem('navbarBrand_mode', 'up');
-      // this.scaleUp(navBrand);
     }
 
     this.setState({
