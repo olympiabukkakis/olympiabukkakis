@@ -28,22 +28,9 @@ class Layout extends Component {
     };
   }
 
-  isNavbarBrandUp = () => {
-    if (typeof window !== 'undefined') {
-      console.log(window.scrollY);
-      const lsState = localStorage.getItem('navbarBrand_mode');
-      if (!lsState) {
-        return true;
-      } else {
-        return lsState === 'up';
-      }
-    } else {
-      return false;
-    }
-  };
-
   render() {
     const { children, themeLight, hideNav, scaleUp } = this.props;
+    console.log('scaleUp', scaleUp);
 
     return (
       <StaticQuery
@@ -57,7 +44,7 @@ class Layout extends Component {
                     title={data.site.siteMetadata.title}
                     handleScroll={this.handleScroll}
                     hideNav={hideNav}
-                    scaleUp={scaleUp && this.isNavbarBrandUp()}
+                    scaleUp={scaleUp}
                   />
                 </div>
                 <div className='col-main col-xl-8'>

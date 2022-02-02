@@ -5,6 +5,7 @@ import Layout from '../components/Layout';
 import SEO from '../components/SEO';
 import Image from 'gatsby-image';
 import anime from '../../node_modules/animejs/lib/anime.es.js';
+import { isNavbarBrandUp } from '../helpers/es6';
 
 class Index extends Component {
   constructor(props) {
@@ -20,24 +21,32 @@ class Index extends Component {
 
   // not sure if getting the navBrand here is a good idea...
   componentDidMount() {
-    this.setState(
-      {
-        hero: document.getElementById('hero'),
-        navBrand: document.querySelector('.navbar-brand'),
-        navLinks: document.querySelectorAll('.nav-link'),
-      },
-      () => {
-        if (this.isNavbarBrandScaledDown()) {
-          localStorage.setItem('navbarBrand_mode', 'down');
-        } else {
-          localStorage.setItem('navbarBrand_mode', 'up');
-        }
-      }
-    );
+    const hero = document.getElementById('hero');
+    const navBrand = document.querySelector('.navbar-brand');
+    const navLinks = document.querySelectorAll('.nav-link');
+
+    // if (window.scrollY < 50 && window.location.pathname == '/') {
+    //   console.log('trigger scale up when on landing');
+    //   this.scaleUp(navBrand);
+    // }
+
+    if (this.isNavbarBrandScaledDown(hero)) {
+      localStorage.setItem('navbarBrand_mode', 'down');
+      // this.scaleDown(navBrand);
+    } else {
+      localStorage.setItem('navbarBrand_mode', 'up');
+      // this.scaleUp(navBrand);
+    }
+
+    this.setState({
+      hero,
+      navBrand,
+      navLinks,
+    });
   }
 
-  isNavbarBrandScaledDown = () => {
-    return window.scrollY > this.state.hero.scrollHeight - 800;
+  isNavbarBrandScaledDown = (hero) => {
+    return window.scrollY > hero.scrollHeight - 800;
   };
 
   handleScroll = () => {
@@ -47,7 +56,7 @@ class Index extends Component {
       this.state.navLinks.forEach((el) => this.hide(el));
     }
 
-    if (this.isNavbarBrandScaledDown()) {
+    if (this.isNavbarBrandScaledDown(this.state.hero)) {
       this.scaleDown(this.state.navBrand);
     } else {
       this.scaleUp(this.state.navBrand);
@@ -63,7 +72,7 @@ class Index extends Component {
   };
 
   scaleUp = (el) => {
-    if (el.classList.contains('scale-down')) {
+    if (el.classList.contains('scale-down') || !el.classList.contains('scale-up')) {
       el.classList.remove('scale-down');
       el.classList.add('scale-up');
       localStorage.setItem('navbarBrand_mode', 'up');
@@ -90,7 +99,11 @@ class Index extends Component {
     return (
       <>
         <SEO />
-        <Layout handleScroll={this.handleScroll} hideNav={true} scaleUp={true}>
+        <Layout
+          handleScroll={this.handleScroll}
+          hideNav={true}
+          scaleUp={isNavbarBrandUp(this.props.location?.action !== 'PUSH')}
+        >
           <section id='hero' />
           <section id='work' className='container container-sm'>
             {work.edges.map(({ node }) => {

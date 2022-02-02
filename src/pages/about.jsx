@@ -1,12 +1,13 @@
-import React, { useState } from "react";
-import { graphql } from "gatsby";
-import Img from "gatsby-image";
-import { Tooltip } from "reactstrap";
+import React, { useState } from 'react';
+import { graphql } from 'gatsby';
+import Img from 'gatsby-image';
+import { Tooltip } from 'reactstrap';
 
-import Layout from "../components/Layout";
-import SEO from "../components/SEO";
-import Back from "../components/Back";
-import BtnCopy from "../components/BtnCopy";
+import Layout from '../components/Layout';
+import SEO from '../components/SEO';
+import Back from '../components/Back';
+import BtnCopy from '../components/BtnCopy';
+import { isNavbarBrandUp } from '../helpers/es6';
 
 function About({ data }) {
   const { about, aboutPicture } = data;
@@ -14,24 +15,24 @@ function About({ data }) {
   return (
     <>
       <SEO />
-      <Layout themeLight={true}>
+      <Layout themeLight={true} scaleUp={isNavbarBrandUp()}>
         <Back />
-        <section id="about" className="container container-sm">
-          <div className="row">
-            <div className="col-pic col-md-6">
-              <Img fluid={aboutPicture.childImageSharp.fluid} alt="Olympia Bukkakis' portrait" className="portrait" />
+        <section id='about' className='container container-sm'>
+          <div className='row'>
+            <div className='col-pic col-md-6'>
+              <Img fluid={aboutPicture.childImageSharp.fluid} alt="Olympia Bukkakis' portrait" className='portrait' />
               <small>Photography: {about.frontmatter.photographer}</small>
-              <p className="contact">
+              <p className='contact'>
                 Contact: <br />
-                <BtnCopy copyItem="info@olympiabukkakis.com">
+                <BtnCopy copyItem='info@olympiabukkakis.com'>
                   <span>info</span>
-                  <span className="text-nowrap">&#64;olympiabukkakis</span>
+                  <span className='text-nowrap'>&#64;olympiabukkakis</span>
                   <span>.com</span>
                 </BtnCopy>
               </p>
             </div>
-            <div className="col-text col-md-6">
-              <div className="" dangerouslySetInnerHTML={{ __html: about.html }} />
+            <div className='col-text col-md-6'>
+              <div className='' dangerouslySetInnerHTML={{ __html: about.html }} />
             </div>
           </div>
         </section>
