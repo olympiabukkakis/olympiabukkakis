@@ -42,7 +42,7 @@ class Navigation extends Component {
           </NavbarToggler>
         </div>
         <Collapse isOpen={this.state.isOpen} navbar>
-          <Nav className="navbar-nav ml-auto nav-list">
+          <Nav className="navbar-nav ms-auto nav-list">
             <NavItem>
               <Link
                 className={classnames({ "nav-link": true, bottom: true, hide: hideNav })}

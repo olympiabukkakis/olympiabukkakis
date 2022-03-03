@@ -3,8 +3,7 @@ import { Link, graphql } from 'gatsby';
 
 import Layout from '../components/Layout';
 import SEO from '../components/SEO';
-import Image from 'gatsby-image';
-import anime from '../../node_modules/animejs/lib/anime.es.js';
+import { GatsbyImage } from 'gatsby-plugin-image';
 import { isNavbarBrandUp } from '../helpers/es6';
 
 class Index extends Component {
@@ -110,8 +109,8 @@ class Index extends Component {
                 <div className='work' key={node.id}>
                   <Link to={node.fields.slug}>
                     {typeof picture !== 'undefined' && (
-                      <Image
-                        fluid={picture.node.childImageSharp.fluid}
+                      <GatsbyImage
+                        image={picture.node.childImageSharp.gatsbyImageData}
                         alt={node.frontmatter.title + ' picture'}
                         style={{ width: '100%', height: '50vmin', marginBottom: '2rem' }}
                       />
@@ -166,9 +165,7 @@ export const query = graphql`
           id
           base
           childImageSharp {
-            fluid(maxHeight: 990) {
-              ...GatsbyImageSharpFluid_noBase64
-            }
+            gatsbyImageData(layout: CONSTRAINED, height: 990)
           }
         }
       }

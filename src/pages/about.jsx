@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { graphql } from 'gatsby';
-import Img from 'gatsby-image';
+import { GatsbyImage } from 'gatsby-plugin-image';
 import { Tooltip } from 'reactstrap';
 
 import Layout from '../components/Layout';
@@ -20,7 +20,7 @@ function About({ data }) {
         <section id='about' className='container container-sm'>
           <div className='row'>
             <div className='col-pic col-md-6'>
-              <Img fluid={aboutPicture.childImageSharp.fluid} alt="Olympia Bukkakis' portrait" className='portrait' />
+              <GatsbyImage image={aboutPicture.childImageSharp.gatsbyImageData} alt="Olympia Bukkakis' portrait" className='portrait' />
               <small>Photography: {about.frontmatter.photographer}</small>
               <p className='contact'>
                 Contact: <br />
@@ -54,9 +54,7 @@ export const query = graphql`
     }
     aboutPicture: file(base: { eq: "about.jpg" }) {
       childImageSharp {
-        fluid(maxWidth: 305) {
-          ...GatsbyImageSharpFluid_noBase64
-        }
+        gatsbyImageData(layout: CONSTRAINED, width: 305) 
       }
     }
   }

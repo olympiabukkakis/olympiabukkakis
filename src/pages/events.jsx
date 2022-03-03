@@ -1,6 +1,6 @@
 import React from "react";
 import { Link, graphql } from "gatsby";
-import Image from "gatsby-image";
+import { GatsbyImage } from "gatsby-plugin-image";
 
 import Layout from "../components/Layout";
 import Back from "../components/Back";
@@ -27,8 +27,8 @@ function Events({ data }) {
             return (
               <article className="event" key={node.id}>
                 <Link to={node.fields.slug}>
-                  <Image
-                    fluid={picture.node.childImageSharp.fluid}
+                  <GatsbyImage
+                    image={picture.node.childImageSharp.gatsbyImageData}
                     alt={node.frontmatter.title + " event poster"}
                     style={{ width: "100%", height: "33vmin", marginBottom: "1.5rem" }}
                   />
@@ -86,9 +86,7 @@ export const query = graphql`
           id
           base
           childImageSharp {
-            fluid(maxHeight: 500) {
-              ...GatsbyImageSharpFluid_noBase64
-            }
+            gatsbyImageData(layout: CONSTRAINED, height: 500) 
           }
         }
       }

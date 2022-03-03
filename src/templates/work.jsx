@@ -3,10 +3,10 @@ import { graphql } from "gatsby";
 
 import Layout from "../components/Layout";
 import Back from "../components/Back";
-import Image from "gatsby-image";
+import { GatsbyImage } from "gatsby-plugin-image";
 import SEO from "../components/SEO";
 
-export default ({ data }) => {
+export default function Work({ data }) {
   const { work, pictures } = data;
   const workRegex = new RegExp(work.frontmatter.id, "i");
   const workPictures = pictures.edges.filter(({ node }) => node.base.match(workRegex) && !node.base.match(/cover/i));
@@ -40,9 +40,9 @@ export default ({ data }) => {
               </div>
             )}
             {workPictures.map(({ node }) => (
-              <Image
+              <GatsbyImage
                 key={node.id}
-                fluid={node.childImageSharp.fluid}
+                image={node.childImageSharp.gatsbyImageData}
                 title={work.frontmatter.title + " photograph"}
                 alt={work.frontmatter.title + " photograph"}
                 style={{ width: "100%", marginBottom: "0.75rem", display: "inline-block" }}
@@ -80,9 +80,7 @@ export const query = graphql`
           id
           base
           childImageSharp {
-            fluid(maxHeight: 785) {
-              ...GatsbyImageSharpFluid_noBase64
-            }
+            gatsbyImageData(layout: CONSTRAINED, height: 785) 
           }
         }
       }

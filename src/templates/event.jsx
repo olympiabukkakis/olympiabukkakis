@@ -1,13 +1,13 @@
 import React from "react";
 import { graphql } from "gatsby";
-import Image from "gatsby-image";
+import { GatsbyImage } from "gatsby-plugin-image";
 
 import SEO from "../components/SEO";
 import Layout from "../components/Layout";
 import Back from "../components/Back";
 import EventLink from "../components/EventLink";
 
-export default ({ data }) => {
+export default function Event({ data }) {
   const { event, pictures } = data;
   const eventRegex = new RegExp(event.frontmatter.id, "i");
   const coverRegex = new RegExp("cover", "i");
@@ -25,9 +25,9 @@ export default ({ data }) => {
             <div className="col-pic col-lg-6">
               <div className="event-artwork">
                 {eventPictures.map(({ node }) => (
-                  <Image
+                  <GatsbyImage
                     key={node.id}
-                    fluid={node.childImageSharp.fluid}
+                    image={node.childImageSharp.gatsbyImageData}
                     alt={event.frontmatter.title + " artwork"}
                     className="artwork-wrapper"
                     imgStyle={{ height: "auto" }}
@@ -81,9 +81,7 @@ export const query = graphql`
           id
           base
           childImageSharp {
-            fluid(maxHeight: 785) {
-              ...GatsbyImageSharpFluid_noBase64
-            }
+            gatsbyImageData(layout: CONSTRAINED, height: 785) 
           }
         }
       }
