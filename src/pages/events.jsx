@@ -17,7 +17,7 @@ function Events({ data }) {
         <section id="events" className="container container-sm">
           {events.edges.map(({ node }) => {
             const eventRegex = new RegExp(node.frontmatter.id, "i");
-            const [picture] = pictures.edges.filter(({ node }) => node.base.match(eventRegex));
+            // const [picture] = pictures.edges.filter(({ node }) => node.base.match(eventRegex));
 
             // try-out
             const dateArr = node.frontmatter.date.split(" ");
@@ -26,13 +26,13 @@ function Events({ data }) {
 
             return (
               <article className="event" key={node.id}>
-                <Link to={node.fields.slug}>
+                {/* <Link to={node.fields.slug}>
                   <GatsbyImage
                     image={picture.node.childImageSharp.gatsbyImageData}
                     alt={node.frontmatter.title + " event poster"}
                     style={{ width: "100%", height: "33vmin", marginBottom: "1.5rem" }}
                   />
-                </Link>
+                </Link> */}
 
                 <Link to={node.fields.slug}>
                   <h2 className="event-title">{node.frontmatter.title}</h2>
@@ -73,20 +73,6 @@ export const query = graphql`
           }
           fields {
             slug
-          }
-        }
-      }
-    }
-    pictures: allFile(
-      filter: { sourceInstanceName: { eq: "images" }, base: { regex: "/cover/" } }
-      sort: { fields: [name], order: ASC }
-    ) {
-      edges {
-        node {
-          id
-          base
-          childImageSharp {
-            gatsbyImageData(layout: CONSTRAINED, height: 500) 
           }
         }
       }

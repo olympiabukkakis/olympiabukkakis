@@ -1,4 +1,3 @@
-const path = require('path');
 require('dotenv').config({
   path: `.env.${process.env.NODE_ENV}`,
 });
@@ -36,10 +35,10 @@ module.exports = {
   plugins: [
     'gatsby-plugin-react-helmet',
     {
-      resolve: 'gatsby-source-filesystem',
+      resolve: 'gatsby-source-contentful',
       options: {
-        name: 'images',
-        path: `${__dirname}/src/images`,
+        accessToken: process.env.CONTENTFUL_ACCESS_TOKEN,
+        spaceId: process.env.CONTENTFUL_SPACE_ID,
       },
     },
     {
@@ -89,6 +88,12 @@ module.exports = {
     'gatsby-plugin-offline',
     'gatsby-plugin-sass',
     'gatsby-plugin-sitemap',
-    'gatsby-plugin-robots-txt',
+    {
+      resolve: 'gatsby-plugin-robots-txt',
+      options: {
+        host: siteUrl,
+        policy: [{ userAgent: '*', disallow: noindex }],
+      },
+    },
   ],
 };

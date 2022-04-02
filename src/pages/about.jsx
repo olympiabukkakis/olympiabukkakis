@@ -20,7 +20,7 @@ function About({ data }) {
         <section id='about' className='container container-sm'>
           <div className='row'>
             <div className='col-pic col-md-6'>
-              <GatsbyImage image={aboutPicture.childImageSharp.gatsbyImageData} alt="Olympia Bukkakis' portrait" className='portrait' />
+              {/* <GatsbyImage image={aboutPicture.childImageSharp.gatsbyImageData} alt="Olympia Bukkakis' portrait" className='portrait' /> */}
               <small>Photography: {about.frontmatter.photographer}</small>
               <p className='contact'>
                 Contact: <br />
@@ -50,11 +50,6 @@ export const query = graphql`
       html
       frontmatter {
         photographer
-      }
-    }
-    aboutPicture: file(base: { eq: "about.jpg" }) {
-      childImageSharp {
-        gatsbyImageData(layout: CONSTRAINED, width: 305) 
       }
     }
   }

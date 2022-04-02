@@ -11,9 +11,9 @@ export default function Event({ data }) {
   const { event, pictures } = data;
   const eventRegex = new RegExp(event.frontmatter.id, "i");
   const coverRegex = new RegExp("cover", "i");
-  const eventPictures = pictures.edges.filter(
-    ({ node }) => node.base.match(eventRegex) && !node.base.match(coverRegex)
-  );
+  // const eventPictures = pictures.edges.filter(
+  //   ({ node }) => node.base.match(eventRegex) && !node.base.match(coverRegex)
+  // );
 
   return (
     <>
@@ -23,7 +23,7 @@ export default function Event({ data }) {
         <article className="event container container-sm">
           <div className="row no-gutters">
             <div className="col-pic col-lg-6">
-              <div className="event-artwork">
+              {/* <div className="event-artwork">
                 {eventPictures.map(({ node }) => (
                   <GatsbyImage
                     key={node.id}
@@ -33,7 +33,7 @@ export default function Event({ data }) {
                     imgStyle={{ height: "auto" }}
                   />
                 ))}
-              </div>
+              </div> */}
               {event.frontmatter.artwork && (
                 <div className="event-credits">
                   <small>Artwork: {event.frontmatter.artwork}</small>
@@ -73,17 +73,6 @@ export const query = graphql`
         description
         link
         artwork
-      }
-    }
-    pictures: allFile(filter: { sourceInstanceName: { eq: "images" } }, sort: { fields: [name], order: ASC }) {
-      edges {
-        node {
-          id
-          base
-          childImageSharp {
-            gatsbyImageData(layout: CONSTRAINED, height: 785) 
-          }
-        }
       }
     }
   }

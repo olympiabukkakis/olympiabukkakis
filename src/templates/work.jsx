@@ -9,7 +9,7 @@ import SEO from "../components/SEO";
 export default function Work({ data }) {
   const { work, pictures } = data;
   const workRegex = new RegExp(work.frontmatter.id, "i");
-  const workPictures = pictures.edges.filter(({ node }) => node.base.match(workRegex) && !node.base.match(/cover/i));
+  // const workPictures = pictures.edges.filter(({ node }) => node.base.match(workRegex) && !node.base.match(/cover/i));
 
   return (
     <>
@@ -39,7 +39,7 @@ export default function Work({ data }) {
                 />
               </div>
             )}
-            {workPictures.map(({ node }) => (
+            {/* {workPictures.map(({ node }) => (
               <GatsbyImage
                 key={node.id}
                 image={node.childImageSharp.gatsbyImageData}
@@ -48,7 +48,7 @@ export default function Work({ data }) {
                 style={{ width: "100%", marginBottom: "0.75rem", display: "inline-block" }}
                 imgStyle={{ height: "auto" }}
               />
-            ))}
+            ))} */}
           </div>
           {work.frontmatter.photographer && (
             <div className="work-credits">
@@ -72,17 +72,6 @@ export const query = graphql`
         endDate
         video
         photographer
-      }
-    }
-    pictures: allFile(filter: { sourceInstanceName: { eq: "images" } }, sort: { fields: [name], order: ASC }) {
-      edges {
-        node {
-          id
-          base
-          childImageSharp {
-            gatsbyImageData(layout: CONSTRAINED, height: 785) 
-          }
-        }
       }
     }
   }

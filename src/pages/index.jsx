@@ -100,14 +100,14 @@ class Index extends Component {
           <section id='work' className='container container-sm'>
             {work.edges.map(({ node }) => {
               const workRegex = new RegExp(node.frontmatter.id, 'i');
-              let [picture] = pictures.edges.filter(
-                ({ node }) => node.base.match(workRegex) && node.base.match(/cover/i)
-              );
-              if (!picture) [picture] = pictures.edges.filter(({ node }) => node.base.match(workRegex));
+              // let [picture] = pictures?.edges.filter(
+              //   ({ node }) => node.base.match(workRegex) && node.base.match(/cover/i)
+              // );
+              // if (!picture) [picture] = pictures.edges.filter(({ node }) => node.base.match(workRegex));
 
               return (
                 <div className='work' key={node.id}>
-                  <Link to={node.fields.slug}>
+                  {/* <Link to={node.fields.slug}>
                     {typeof picture !== 'undefined' && (
                       <GatsbyImage
                         image={picture.node.childImageSharp.gatsbyImageData}
@@ -115,7 +115,7 @@ class Index extends Component {
                         style={{ width: '100%', height: '50vmin', marginBottom: '2rem' }}
                       />
                     )}
-                  </Link>
+                  </Link> */}
 
                   <h2 className='work-title'>
                     <Link to={node.fields.slug}>{node.frontmatter.title}</Link>
@@ -155,17 +155,6 @@ export const query = graphql`
           }
           fields {
             slug
-          }
-        }
-      }
-    }
-    pictures: allFile(filter: { sourceInstanceName: { eq: "images" } }, sort: { fields: [name], order: ASC }) {
-      edges {
-        node {
-          id
-          base
-          childImageSharp {
-            gatsbyImageData(layout: CONSTRAINED, height: 990)
           }
         }
       }
