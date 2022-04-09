@@ -1,85 +1,110 @@
-// const path = require("path");
-// const { createFilePath } = require("gatsby-source-filesystem");
+const path = require('path');
+const { simpleFormatString } = require('./src/helpers/common');
 
-// const getFileId = (path) => {
-//   return path
-//     .split("/")
-//     .reverse()[0]
-//     .replace(".md", "");
-// };
+const getNodeType = (string) => {
+  return string.toLowerCase().replace('contentful', '');
+};
 
-// exports.onCreateNode = ({ node, getNode, actions }) => {
-//   const { createNodeField } = actions;
-//   if (node.internal.type === "MarkdownRemark") {
-//     const slug = createFilePath({ node, getNode, basePath: "pages" });
-//     createNodeField({
-//       node,
-//       name: "slug",
-//       value: slug,
-//     });
-//   }
-// };
+exports.onCreateNode = ({ node, getNode, actions }) => {
+  const { createNodeField } = actions;
+  if (node.internal.type === 'ContentfulWork' || node.internal.type === 'ContentfulEvent') {
+    createNodeField({
+      node,
+      name: 'id',
+      value: simpleFormatString(node.title),
+    });
+    // createNodeField({
+    //   node,
+    //   name: 'type',
+    //   value: getNodeType(node.internal.type),
+    // });
+  }
+};
 
-// exports.createPages = ({ graphql, actions }) => {
-//   const { createPage } = actions;
-//   return graphql(`
-//     {
-//       allMarkdownRemark {
-//         edges {
-//           node {
-//             fileAbsolutePath
-//             html
-//             fields {
-//               slug
-//             }
-//             frontmatter {
-//               type
-//             }
-//           }
-//         }
-//       }
-//     }
-//   `).then((result) => {
-//     if (result.errors) throw result.errors;
+exports.createPages = ({ graphql, actions }) => {
+  const { createPage } = actions;
+  return graphql(`
+    {
+      works: allContentfulWork {
+        edges {
+          node {
+            fields {
+              id
+            }
+          }
+        }
+      }
+      events: allContentfulEvent {
+        edges {
+          node {
+            fields {
+              id
+            }
+          }
+        }
+      }
+      imprint: contentfulImprint {
+        internal {
+          type
+        }
+        content {
+          childMarkdownRemark {
+            html
+          }
+        }
+      }
+      privacy: contentfulPrivacy {
+        internal {
+          type
+        }
+        text {
+          childMarkdownRemark {
+            html
+          }
+        }
+      }
+    }
+  `).then((result) => {
+    if (result.errors) throw result.errors;
 
-//     const { edges } = result.data.allMarkdownRemark;
-//     const work = edges.filter(({ node }) => node.frontmatter.type.trim() === "work");
-//     const event = edges.filter(({ node }) => node.frontmatter.type.trim() === "event");
+    const { works, events, imprint, privacy } = result.data;
 
-//     const simplePages = edges.filter(
-//       ({ node }) => getFileId(node.fileAbsolutePath) === "imprint" || getFileId(node.fileAbsolutePath) === "privacy"
-//     );
+    works.edges.forEach(({ node }) => {
+      createPage({
+        path: node.fields.id,
+        component: path.resolve('./src/templates/work.jsx'),
+        context: {
+          id: node.fields.id,
+        },
+      });
+    });
 
-//     simplePages.forEach(({ node }) => {
-//       const id = getFileId(node.fileAbsolutePath);
-//       createPage({
-//         path: `/${id}`,
-//         component: path.resolve(`./src/templates/simplePage.jsx`),
-//         context: {
-//           id,
-//           html: node.html,
-//         },
-//       });
-//     });
+    events.edges.forEach(({ node }) => {
+      createPage({
+        path: node.fields.id,
+        component: path.resolve('./src/templates/event.jsx'),
+        context: {
+          id: node.fields.id,
+        },
+      });
+    });
 
-//     work.forEach(({ node }) => {
-//       createPage({
-//         path: node.fields.slug,
-//         component: path.resolve("./src/templates/work.jsx"),
-//         context: {
-//           slug: node.fields.slug,
-//         },
-//       });
-//     });
+    createPage({
+      path: `/${getNodeType(imprint.internal.type)}`,
+      component: path.resolve(`./src/templates/simplePage.jsx`),
+      context: {
+        id: getNodeType(imprint.internal.type),
+        html: imprint.content.childMarkdownRemark.html,
+      },
+    });
 
-//     event.forEach(({ node }) => {
-//       createPage({
-//         path: node.fields.slug,
-//         component: path.resolve("./src/templates/event.jsx"),
-//         context: {
-//           slug: node.fields.slug,
-//         },
-//       });
-//     });
-//   });
-// };
+    createPage({
+      path: `/${getNodeType(privacy.internal.type)}`,
+      component: path.resolve(`./src/templates/simplePage.jsx`),
+      context: {
+        id: getNodeType(privacy.internal.type),
+        html: privacy.text.childMarkdownRemark.html,
+      },
+    });
+  });
+};

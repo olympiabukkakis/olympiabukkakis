@@ -15,35 +15,35 @@ function Events({ data }) {
       <Layout>
         <Back />
         <section id="events" className="container container-sm">
-          {events.edges.map(({ node }) => {
-            const eventRegex = new RegExp(node.frontmatter.id, "i");
-            // const [picture] = pictures.edges.filter(({ node }) => node.base.match(eventRegex));
+          {events.edges.map(({ node }, i) => {
+            const { picture, title, dateTime, venue, link, longDescription, artwork } = node
 
             // try-out
-            const dateArr = node.frontmatter.date.split(" ");
-            const day = dateArr[0];
-            const month = dateArr[1].toUpperCase();
+            // const dateArr = date.split(" ");
+            // const day = dateArr[0];
+            // const month = dateArr[1].toUpperCase();
 
             return (
-              <article className="event" key={node.id}>
+              <article className="event" key={i}>
                 {/* <Link to={node.fields.slug}>
                   <GatsbyImage
                     image={picture.node.childImageSharp.gatsbyImageData}
-                    alt={node.frontmatter.title + " event poster"}
+                    alt={title + " event poster"}
                     style={{ width: "100%", height: "33vmin", marginBottom: "1.5rem" }}
                   />
                 </Link> */}
 
-                <Link to={node.fields.slug}>
-                  <h2 className="event-title">{node.frontmatter.title}</h2>
+                <Link to={node.fields.id}>
+                  <h2 className="event-title">{title}</h2>
                 </Link>
                 <h2 className="event-details">
                   <small>
-                    {node.frontmatter.date} {node.frontmatter.time && <span>&middot; {node.frontmatter.time} </span>}{" "}
-                    &middot; {node.frontmatter.venue}
+                    {dateTime} &middot; {venue}
                   </small>
                 </h2>
-                <p className="event-description">{node.frontmatter.description}</p>
+                <p className="event-description"
+                  dangerouslySetInnerHTML={{ __html: longDescription.childMarkdownRemark.html }}
+                ></p>
               </article>
             );
           })}
@@ -55,24 +55,24 @@ function Events({ data }) {
 
 export const query = graphql`
   query {
-    events: allMarkdownRemark(
-      filter: { frontmatter: { type: { eq: "event" } } }
-      sort: { fields: [frontmatter___date], order: DESC }
-    ) {
+    events: allContentfulEvent(sort: {fields: dateTime, order: DESC}) {
       edges {
         node {
-          id
-          frontmatter {
-            id
-            title
-            date(formatString: "DD MMM")
-            time
-            venue
-            description
-            link
+          title
+          dateTime(formatString: "DD MMM")
+          venue
+          link
+          longDescription {
+            childMarkdownRemark {
+              html
+            }
           }
+          picture {
+            gatsbyImageData(layout: CONSTRAINED)
+          }
+          artwork
           fields {
-            slug
+            id
           }
         }
       }

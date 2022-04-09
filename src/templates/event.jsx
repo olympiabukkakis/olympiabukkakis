@@ -8,8 +8,8 @@ import Back from "../components/Back";
 import EventLink from "../components/EventLink";
 
 export default function Event({ data }) {
-  const { event, pictures } = data;
-  const eventRegex = new RegExp(event.frontmatter.id, "i");
+  const { event } = data;
+  const { picture, title, dateTime, venue, link, longDescription, artwork } = event
   const coverRegex = new RegExp("cover", "i");
   // const eventPictures = pictures.edges.filter(
   //   ({ node }) => node.base.match(eventRegex) && !node.base.match(coverRegex)
@@ -17,7 +17,7 @@ export default function Event({ data }) {
 
   return (
     <>
-      <SEO title={event.frontmatter.title} />
+      <SEO title={title} />
       <Layout>
         <Back />
         <article className="event container container-sm">
@@ -28,30 +28,29 @@ export default function Event({ data }) {
                   <GatsbyImage
                     key={node.id}
                     image={node.childImageSharp.gatsbyImageData}
-                    alt={event.frontmatter.title + " artwork"}
+                    alt={title + " artwork"}
                     className="artwork-wrapper"
                     imgStyle={{ height: "auto" }}
                   />
                 ))}
               </div> */}
-              {event.frontmatter.artwork && (
+              {artwork && (
                 <div className="event-credits">
-                  <small>Artwork: {event.frontmatter.artwork}</small>
+                  <small>Artwork: {artwork}</small>
                 </div>
               )}
-              <EventLink link={event.frontmatter.link} />
+              <EventLink link={link} />
             </div>
             <div className="col-text col-lg-6">
               <div className="event-header row align-items-start">
                 <div className="">
-                  <h1>{event.frontmatter.title}</h1>
+                  <h1>{title}</h1>
                   <h3 className="muted font-weight-normal">
-                    {event.frontmatter.date} {event.frontmatter.time && <span>&middot; {event.frontmatter.time} </span>}
-                    &middot; {event.frontmatter.venue}
+                    {dateTime} &middot; {venue}
                   </h3>
                 </div>
               </div>
-              <div className="event-text" dangerouslySetInnerHTML={{ __html: event.html }} />
+              <div className="event-text" dangerouslySetInnerHTML={{ __html: longDescription.childMarkdownRemark.html }} />
             </div>
           </div>
         </article>
@@ -61,19 +60,21 @@ export default function Event({ data }) {
 };
 
 export const query = graphql`
-  query($slug: String!) {
-    event: markdownRemark(fields: { slug: { eq: $slug } }) {
-      html
-      frontmatter {
-        id
-        title
-        date(formatString: "DD MMM")
-        time
-        venue
-        description
-        link
-        artwork
+  query($id: String!) {
+    event: contentfulEvent(title: {eq: $id}) {
+      title
+      dateTime(formatString: "DD MMM")
+      venue
+      link
+      longDescription {
+        childMarkdownRemark {
+          html
+        }
       }
+      picture {
+        gatsbyImageData(layout: CONSTRAINED)
+      }
+      artwork
     }
   }
 `;

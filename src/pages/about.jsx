@@ -7,7 +7,7 @@ import Layout from '../components/Layout';
 import SEO from '../components/SEO';
 import Back from '../components/Back';
 import BtnCopy from '../components/BtnCopy';
-import { isNavbarBrandUp } from '../helpers/es6';
+import { isNavbarBrandUp } from '../helpers/esm';
 
 function About({ data }) {
   const { about, aboutPicture } = data;
@@ -21,7 +21,7 @@ function About({ data }) {
           <div className='row'>
             <div className='col-pic col-md-6'>
               {/* <GatsbyImage image={aboutPicture.childImageSharp.gatsbyImageData} alt="Olympia Bukkakis' portrait" className='portrait' /> */}
-              <small>Photography: {about.frontmatter.photographer}</small>
+              <small>Photography: {about.photographer}</small>
               <p className='contact'>
                 Contact: <br />
                 <BtnCopy copyItem='info@olympiabukkakis.com'>
@@ -32,7 +32,7 @@ function About({ data }) {
               </p>
             </div>
             <div className='col-text col-md-6'>
-              <div className='' dangerouslySetInnerHTML={{ __html: about.html }} />
+              <div className='' dangerouslySetInnerHTML={{ __html: about.bio.childMarkdownRemark.html }} />
             </div>
           </div>
         </section>
@@ -45,12 +45,13 @@ export default About;
 
 export const query = graphql`
   query {
-    about: markdownRemark(frontmatter: { type: { eq: "about" } }) {
-      id
-      html
-      frontmatter {
-        photographer
+    about: contentfulAbout {
+      bio {
+        childMarkdownRemark {
+          html
+        }
       }
+      photographer
     }
   }
 `;

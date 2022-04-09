@@ -3,19 +3,23 @@ const capitalise = (str) => {
   return str.charAt(0).toUpperCase() + str.slice(1);
 };
 
-function formatTitle(title, format = 'url') {
+function simpleFormatString(title, format = 'id') {
   title = title.trim();
   if (typeof title !== 'string') return title;
-  const dash = new RegExp('-', 'g');
-  const underscore = new RegExp('_', 'g');
-  const space = new RegExp(' ', 'g');
+  const dash = new RegExp('-', 'gm');
+  const underscore = new RegExp('_', 'gm');
+  const space = new RegExp(' ', 'gm');
+  const quotes = new RegExp('"', 'gm');
 
-  if (format.toLowerCase() === 'url') {
+  if (format.toLowerCase() === 'id') {
     if (space.test(title)) {
       title = title.replace(space, '-');
     }
     if (underscore.test(title)) {
       title = title.replace(underscore, '-');
+    }
+    if (quotes.test(title)) {
+      title = title.replace(quotes, '');
     }
     return title.toLowerCase();
   } else if (format.toLowerCase() === 'headline') {
@@ -26,9 +30,9 @@ function formatTitle(title, format = 'url') {
       console.log('Nothing to format!');
     }
   } else {
-    console.log("Please provide a format argument, either 'url' or 'headline'");
-    return title;
+    console.error("Please provide a format argument, either 'id' or 'headline'");
   }
+  return title;
 }
 
 export const isNavbarBrandUp = (boo = false) => {
@@ -47,4 +51,4 @@ export const isNavbarBrandUp = (boo = false) => {
   }
 };
 
-export { capitalise, formatTitle };
+export { capitalise, simpleFormatString };

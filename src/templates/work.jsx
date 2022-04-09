@@ -7,31 +7,29 @@ import { GatsbyImage } from "gatsby-plugin-image";
 import SEO from "../components/SEO";
 
 export default function Work({ data }) {
-  const { work, pictures } = data;
-  const workRegex = new RegExp(work.frontmatter.id, "i");
-  // const workPictures = pictures.edges.filter(({ node }) => node.base.match(workRegex) && !node.base.match(/cover/i));
+  const { title, startDate, endDate, longDescription, video, photographer, pictures } = data.work;
 
   return (
     <>
-      <SEO title={work.frontmatter.title} />
+      <SEO title={title} />
       <Layout>
         <Back />
         <article className="work container container-sm">
           <div className="work-header">
-            <h1>{work.frontmatter.title}</h1>
+            <h1>{title}</h1>
             <h3 className="muted font-weight-normal">
-              {work.frontmatter.startDate}
-              {work.frontmatter.endDate !== "" && <span> &ndash; {work.frontmatter.endDate}</span>}
+              {startDate}
+              {endDate !== "" && <span> &ndash; {endDate}</span>}
             </h3>
           </div>
-          <div className="work-text" dangerouslySetInnerHTML={{ __html: work.html }} />
+          <div className="work-text" dangerouslySetInnerHTML={{ __html: longDescription.childMarkdownRemark.html }} />
 
           <div className="work-gallery">
-            {work.frontmatter.video !== "" && (
+            {video !== "" && (
               <div className="work-video">
                 <iframe
-                  src={work.frontmatter.video}
-                  title={work.frontmatter.title + " trailer"}
+                  src={video}
+                  title={title + " trailer"}
                   width="100%"
                   frameBorder="0"
                   allow="autoplay; fullscreen"
@@ -43,16 +41,16 @@ export default function Work({ data }) {
               <GatsbyImage
                 key={node.id}
                 image={node.childImageSharp.gatsbyImageData}
-                title={work.frontmatter.title + " photograph"}
-                alt={work.frontmatter.title + " photograph"}
+                title={title + " photograph"}
+                alt={title + " photograph"}
                 style={{ width: "100%", marginBottom: "0.75rem", display: "inline-block" }}
                 imgStyle={{ height: "auto" }}
               />
             ))} */}
           </div>
-          {work.frontmatter.photographer && (
+          {photographer && (
             <div className="work-credits">
-              <small>Photography: {work.frontmatter.photographer}</small>
+              <small>Photography: {photographer}</small>
             </div>
           )}
         </article>
@@ -62,16 +60,20 @@ export default function Work({ data }) {
 };
 
 export const query = graphql`
-  query($slug: String!) {
-    work: markdownRemark(fields: { slug: { eq: $slug } }) {
-      html
-      frontmatter {
-        id
-        title
-        startDate(formatString: "MMMM YYYY")
-        endDate
-        video
-        photographer
+  query($id: String!) {
+    work: contentfulWork(fields: {id: {eq: $id}}) {
+      title
+      startDate(formatString: "MMMM YYYY")
+      endDate(formatString: "MMMM YYYY")
+      longDescription {
+        childMarkdownRemark {
+          html
+        }
+      }
+      video
+      photographer
+      pictures {
+        gatsbyImageData(layout: CONSTRAINED)
       }
     }
   }

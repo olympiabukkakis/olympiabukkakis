@@ -4,7 +4,7 @@ import { Link, graphql } from 'gatsby';
 import Layout from '../components/Layout';
 import SEO from '../components/SEO';
 import { GatsbyImage } from 'gatsby-plugin-image';
-import { isNavbarBrandUp } from '../helpers/es6';
+import { isNavbarBrandUp } from '../helpers/esm';
 
 class Index extends Component {
   constructor(props) {
@@ -86,7 +86,7 @@ class Index extends Component {
   };
 
   render() {
-    const { work, pictures } = this.props.data;
+    const { works } = this.props.data;
 
     return (
       <>
@@ -98,10 +98,11 @@ class Index extends Component {
         >
           <section id='hero' />
           <section id='work' className='container container-sm'>
-            {work.edges.map(({ node }) => {
-              const workRegex = new RegExp(node.frontmatter.id, 'i');
-              // let [picture] = pictures?.edges.filter(
-              //   ({ node }) => node.base.match(workRegex) && node.base.match(/cover/i)
+            {works.edges.map(({ node }) => {
+              const { title, startDate, endDate, shortDescription, photographer, pictures } = node
+              // const workRegex = new RegExp(id, 'i');
+              // let [picture] = pictures.filter(
+              //   pic => pic.base.match(/cover/i)
               // );
               // if (!picture) [picture] = pictures.edges.filter(({ node }) => node.base.match(workRegex));
 
@@ -118,15 +119,15 @@ class Index extends Component {
                   </Link> */}
 
                   <h2 className='work-title'>
-                    <Link to={node.fields.slug}>{node.frontmatter.title}</Link>
+                    <Link to={node.fields.id}>{title}</Link>
                     <small className='work-date'>
                       {' '}
-                      &middot; {node.frontmatter.startDate}
-                      {node.frontmatter.endDate !== '' && <span> &ndash; {node.frontmatter.endDate}</span>}
+                      &middot; {startDate}
+                      {endDate !== '' && <span> &ndash; {endDate}</span>}
                     </small>
                   </h2>
 
-                  <p className='work-description'>{node.frontmatter.description}</p>
+                  <p className='work-description' dangerouslySetInnerHTML={{ __html: shortDescription.childMarkdownRemark.html }}></p>
                 </div>
               );
             })}
@@ -139,22 +140,23 @@ class Index extends Component {
 
 export const query = graphql`
   query {
-    work: allMarkdownRemark(
-      filter: { frontmatter: { type: { eq: "work" } } }
-      sort: { fields: [frontmatter___startDate], order: DESC }
-    ) {
+    works: allContentfulWork(sort: {fields: startDate, order: DESC}) {
       edges {
         node {
-          id
-          frontmatter {
-            id
-            title
-            startDate(formatString: "MMM YYYY")
-            endDate
-            description
+          title
+          startDate(formatString: "MMMM YYYY")
+          endDate(formatString: "MMMM YYYY")
+          shortDescription {
+            childMarkdownRemark {
+              html
+            }
+          }
+          photographer
+          pictures {
+            gatsbyImageData(layout: CONSTRAINED)
           }
           fields {
-            slug
+            id
           }
         }
       }
