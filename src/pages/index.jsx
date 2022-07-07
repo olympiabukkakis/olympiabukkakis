@@ -129,7 +129,7 @@ class Index extends Component {
                     </small>
                   </h2>
 
-                  <p className='work-description' dangerouslySetInnerHTML={{ __html: shortDescription.childMarkdownRemark.html }}></p>
+                  <div className='work-description' dangerouslySetInnerHTML={{ __html: shortDescription.childMarkdownRemark.html }}></div>
                 </div>
               );
             })}
