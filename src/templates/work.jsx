@@ -19,7 +19,7 @@ export default function Work({ data }) {
             <h1>{title}</h1>
             <h3 className="muted font-weight-normal">
               {startDate}
-              {endDate !== "" && <span> &ndash; {endDate}</span>}
+              {endDate && <span> &ndash; {endDate}</span>}
             </h3>
           </div>
           <div className="work-text" dangerouslySetInnerHTML={{ __html: longDescription.childMarkdownRemark.html }} />
@@ -64,7 +64,7 @@ export const query = graphql`
     work: contentfulWork(fields: {id: {eq: $id}}) {
       title
       startDate(formatString: "MMMM YYYY")
-      endDate(formatString: "MMMM YYYY")
+      endDate
       longDescription {
         childMarkdownRemark {
           html

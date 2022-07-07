@@ -1,8 +1,8 @@
-@import "variables";
-@import "bootstrap-custom";
-@import "helpers";
-@import "mixins";
-@import "../../node_modules/rfs/scss";
+@import 'variables';
+@import 'bootstrap-custom';
+@import 'helpers';
+@import 'mixins';
+@import '../../node_modules/rfs/scss';
 
 /* =======================
     GLOBAL
@@ -52,6 +52,8 @@ p {
 .theme-dark,
 .theme-light {
   a {
+    text-decoration: none;
+
     &:hover,
     &.active {
       text-decoration: underline;
@@ -83,6 +85,12 @@ p {
   button {
     color: $light;
     fill: $white !important;
+
+    &:hover,
+    &.active {
+      color: $light;
+      fill: $white !important;
+    }
   }
 
   button {
@@ -98,15 +106,26 @@ p {
   button {
     color: $dark;
     fill: $dark !important;
+
+    &:hover,
+    &.active {
+      color: $dark;
+      fill: $dark !important;
+    }
   }
 
   button {
     background-color: rgba($light, 0.85);
   }
 
-  .navbar {
-    background: linear-gradient(rgba($white, 0.95) 25%, rgba($white, 0.7) 50%, rgba($white, 0.5) 75%, transparent);
-  }
+  // .navbar {
+  //   background-color: linear-gradient(
+  //     rgba($white, 0.95) 25%,
+  //     rgba($white, 0.7) 50%,
+  //     rgba($white, 0.5) 75%,
+  //     transparent
+  //   );
+  // }
 
   .navbar-brand {
     &:hover,

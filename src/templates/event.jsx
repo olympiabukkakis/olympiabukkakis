@@ -1,6 +1,6 @@
 import React from "react";
 import { graphql } from "gatsby";
-import { GatsbyImage } from "gatsby-plugin-image";
+import { GatsbyImage, getImage } from "gatsby-plugin-image";
 
 import SEO from "../components/SEO";
 import Layout from "../components/Layout";
@@ -8,12 +8,7 @@ import Back from "../components/Back";
 import EventLink from "../components/EventLink";
 
 export default function Event({ data }) {
-  const { event } = data;
-  const { picture, title, dateTime, venue, link, longDescription, artwork } = event
-  const coverRegex = new RegExp("cover", "i");
-  // const eventPictures = pictures.edges.filter(
-  //   ({ node }) => node.base.match(eventRegex) && !node.base.match(coverRegex)
-  // );
+  const { picture, title, dateTime, venue, link, longDescription, artwork } = data.event
 
   return (
     <>
@@ -23,17 +18,14 @@ export default function Event({ data }) {
         <article className="event container container-sm">
           <div className="row no-gutters">
             <div className="col-pic col-lg-6">
-              {/* <div className="event-artwork">
-                {eventPictures.map(({ node }) => (
-                  <GatsbyImage
-                    key={node.id}
-                    image={node.childImageSharp.gatsbyImageData}
-                    alt={title + " artwork"}
-                    className="artwork-wrapper"
-                    imgStyle={{ height: "auto" }}
-                  />
-                ))}
-              </div> */}
+              <div className="event-artwork">
+                <GatsbyImage
+                  image={getImage(picture.gatsbyImageData)}
+                  alt={title + " artwork"}
+                  className="artwork-wrapper"
+                  imgStyle={{ height: "auto" }}
+                />
+              </div>
               {artwork && (
                 <div className="event-credits">
                   <small>Artwork: {artwork}</small>
@@ -61,7 +53,7 @@ export default function Event({ data }) {
 
 export const query = graphql`
   query($id: String!) {
-    event: contentfulEvent(title: {eq: $id}) {
+    event: contentfulEvent(fields: {id: {eq: $id}}) {
       title
       dateTime(formatString: "DD MMM")
       venue

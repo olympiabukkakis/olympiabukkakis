@@ -1,6 +1,16 @@
 const path = require('path');
 const { simpleFormatString } = require('./src/helpers/common');
 
+exports.createSchemaCustomization = ({ actions }) => {
+  const { createTypes } = actions;
+  const typeDefs = `
+        type ContentfulWork implements Node {
+            endDate: Date
+        }
+    `;
+  createTypes(typeDefs);
+};
+
 const getNodeType = (string) => {
   return string.toLowerCase().replace('contentful', '');
 };
@@ -71,7 +81,7 @@ exports.createPages = ({ graphql, actions }) => {
 
     works.edges.forEach(({ node }) => {
       createPage({
-        path: node.fields.id,
+        path: `works/${node.fields.id}`,
         component: path.resolve('./src/templates/work.jsx'),
         context: {
           id: node.fields.id,
@@ -81,7 +91,7 @@ exports.createPages = ({ graphql, actions }) => {
 
     events.edges.forEach(({ node }) => {
       createPage({
-        path: node.fields.id,
+        path: `events/${node.fields.id}`,
         component: path.resolve('./src/templates/event.jsx'),
         context: {
           id: node.fields.id,

@@ -3,7 +3,7 @@ import { Link, graphql } from 'gatsby';
 
 import Layout from '../components/Layout';
 import SEO from '../components/SEO';
-import { GatsbyImage } from 'gatsby-plugin-image';
+import { GatsbyImage, getImage } from 'gatsby-plugin-image';
 import { isNavbarBrandUp } from '../helpers/esm';
 
 class Index extends Component {
@@ -17,6 +17,7 @@ class Index extends Component {
       navLinks: null,
     };
   }
+
 
   // not sure if getting the navBrand here is a good idea...
   componentDidMount() {
@@ -86,6 +87,9 @@ class Index extends Component {
   };
 
   render() {
+    console.log(window.history.state.prevUrl)
+    console.log(document.referrer)
+
     const { works } = this.props.data;
 
     return (
@@ -99,31 +103,28 @@ class Index extends Component {
           <section id='hero' />
           <section id='work' className='container container-sm'>
             {works.edges.map(({ node }) => {
-              const { title, startDate, endDate, shortDescription, photographer, pictures } = node
-              // const workRegex = new RegExp(id, 'i');
-              // let [picture] = pictures.filter(
-              //   pic => pic.base.match(/cover/i)
-              // );
-              // if (!picture) [picture] = pictures.edges.filter(({ node }) => node.base.match(workRegex));
+              const { title, startDate, endDate, shortDescription, pictures } = node
+              const [picture] = pictures
+              const workPath = `works/${node.fields.id}`
 
               return (
                 <div className='work' key={node.id}>
-                  {/* <Link to={node.fields.slug}>
+                  <Link to={workPath}>
                     {typeof picture !== 'undefined' && (
                       <GatsbyImage
-                        image={picture.node.childImageSharp.gatsbyImageData}
-                        alt={node.frontmatter.title + ' picture'}
+                        image={getImage(picture.gatsbyImageData)}
+                        alt={title}
                         style={{ width: '100%', height: '50vmin', marginBottom: '2rem' }}
                       />
                     )}
-                  </Link> */}
+                  </Link>
 
                   <h2 className='work-title'>
-                    <Link to={node.fields.id}>{title}</Link>
+                    <Link to={workPath}>{title}</Link>
                     <small className='work-date'>
                       {' '}
                       &middot; {startDate}
-                      {endDate !== '' && <span> &ndash; {endDate}</span>}
+                      {endDate && <span> &ndash; {endDate}</span>}
                     </small>
                   </h2>
 
@@ -145,13 +146,12 @@ export const query = graphql`
         node {
           title
           startDate(formatString: "MMMM YYYY")
-          endDate(formatString: "MMMM YYYY")
+          endDate
           shortDescription {
             childMarkdownRemark {
               html
             }
           }
-          photographer
           pictures {
             gatsbyImageData(layout: CONSTRAINED)
           }

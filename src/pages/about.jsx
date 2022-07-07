@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { graphql } from 'gatsby';
-import { GatsbyImage } from 'gatsby-plugin-image';
+import { GatsbyImage, getImage } from 'gatsby-plugin-image';
 import { Tooltip } from 'reactstrap';
 
 import Layout from '../components/Layout';
@@ -10,7 +10,7 @@ import BtnCopy from '../components/BtnCopy';
 import { isNavbarBrandUp } from '../helpers/esm';
 
 function About({ data }) {
-  const { about, aboutPicture } = data;
+  const { bio, portrait, photographer } = data.about;
 
   return (
     <>
@@ -20,8 +20,8 @@ function About({ data }) {
         <section id='about' className='container container-sm'>
           <div className='row'>
             <div className='col-pic col-md-6'>
-              {/* <GatsbyImage image={aboutPicture.childImageSharp.gatsbyImageData} alt="Olympia Bukkakis' portrait" className='portrait' /> */}
-              <small>Photography: {about.photographer}</small>
+              <GatsbyImage image={getImage(portrait.gatsbyImageData)} alt="Olympia Bukkakis' portrait" className='portrait' />
+              <small>Photography: {photographer}</small>
               <p className='contact'>
                 Contact: <br />
                 <BtnCopy copyItem='info@olympiabukkakis.com'>
@@ -32,7 +32,7 @@ function About({ data }) {
               </p>
             </div>
             <div className='col-text col-md-6'>
-              <div className='' dangerouslySetInnerHTML={{ __html: about.bio.childMarkdownRemark.html }} />
+              <div className='' dangerouslySetInnerHTML={{ __html: bio.childMarkdownRemark.html }} />
             </div>
           </div>
         </section>
@@ -50,6 +50,9 @@ export const query = graphql`
         childMarkdownRemark {
           html
         }
+      }
+      portrait {
+        gatsbyImageData(layout: CONSTRAINED)
       }
       photographer
     }

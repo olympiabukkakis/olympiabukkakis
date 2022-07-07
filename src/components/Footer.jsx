@@ -104,7 +104,7 @@ class Footer extends Component {
 
   render() {
     return (
-      <footer className="w-100 footer-hide row justify-content-between" id="footer">
+      <footer className="d-flex flex-row w-100 footer-hide justify-content-between" id="footer">
         <p className="mb-1 col-12 col-sm text-nowrap">
           <small>
             Olympia Bukkakis &copy; {new Date().getFullYear()} &middot; <Link to="/privacy">Privacy Policy</Link>{" "}
