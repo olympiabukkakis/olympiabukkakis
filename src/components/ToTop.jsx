@@ -1,4 +1,5 @@
 import React from "react";
+import { isBrowser } from "../helpers/esm";
 
 function ToTop() {
   return (

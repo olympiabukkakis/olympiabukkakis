@@ -9,6 +9,7 @@ import ToTop from './ToTop';
 
 import '../scss/Layout.scss';
 import '../scss/Navigation.scss';
+import { isBrowser } from '../helpers/esm';
 
 class Layout extends Component {
   constructor(props) {

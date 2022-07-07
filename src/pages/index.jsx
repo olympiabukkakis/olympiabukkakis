@@ -4,7 +4,7 @@ import { Link, graphql } from 'gatsby';
 import Layout from '../components/Layout';
 import SEO from '../components/SEO';
 import { GatsbyImage, getImage } from 'gatsby-plugin-image';
-import { isNavbarBrandUp } from '../helpers/esm';
+import { isBrowser, isNavbarBrandUp } from '../helpers/esm';
 
 class Index extends Component {
   constructor(props) {
