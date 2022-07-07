@@ -39,16 +39,20 @@ class Index extends Component {
   }
 
   isNavbarBrandScaledDown = (hero) => {
-    return window.scrollY > hero.scrollHeight - 800;
+    if (isBrowser()) {
+      return window.scrollY > hero.scrollHeight - 800;
+    }
+    return false
   };
 
   handleScroll = () => {
-    if (window.scrollY > 1) {
-      this.state.navLinks.forEach((el) => this.show(el));
-    } else {
-      this.state.navLinks.forEach((el) => this.hide(el));
+    if (isBrowser()) {
+      if (window.scrollY > 1) {
+        this.state.navLinks.forEach((el) => this.show(el));
+      } else {
+        this.state.navLinks.forEach((el) => this.hide(el));
+      }
     }
-
     if (this.isNavbarBrandScaledDown(this.state.hero)) {
       this.scaleDown(this.state.navBrand);
     } else {
@@ -87,9 +91,6 @@ class Index extends Component {
   };
 
   render() {
-    console.log(window.history.state.prevUrl)
-    console.log(document.referrer)
-
     const { works } = this.props.data;
 
     return (

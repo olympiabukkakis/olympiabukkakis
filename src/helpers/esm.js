@@ -35,11 +35,12 @@ function simpleFormatString(title, format = 'id') {
   return title;
 }
 
+export const isBrowser = () => typeof window !== 'undefined';
 export const isNavbarBrandUp = (boo = false) => {
   if (boo === false) {
     return false;
   }
-  if (typeof window !== 'undefined') {
+  if (isBrowser()) {
     const lsState = localStorage.getItem('navbarBrand_mode');
     if (!lsState) {
       return true;

@@ -22,10 +22,12 @@ class Layout extends Component {
 
   // again not sure we should get links in this component
   componentDidMount() {
-    window.onscroll = () => {
-      this.setState({ scrollY: window.scrollY });
-      if (this.props.handleScroll) this.props.handleScroll();
-    };
+    if (isBrowser()) {
+      window.onscroll = () => {
+        this.setState({ scrollY: window.scrollY });
+        if (this.props.handleScroll) this.props.handleScroll();
+      };
+    }
   }
 
   render() {

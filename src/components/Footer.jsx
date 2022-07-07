@@ -1,5 +1,6 @@
 import { Link } from "gatsby";
 import React, { Component } from "react";
+import { isBrowser } from "../helpers/esm";
 
 import "../scss/Footer.scss";
 
@@ -18,18 +19,19 @@ class Footer extends Component {
 
   componentDidMount() {
     this.setState({ footer: document.getElementById("footer") });
+    if (isBrowser()) {
+      window.onwheel = (e) => {
+        this.handleScroll(e);
+      };
 
-    window.onwheel = (e) => {
-      this.handleScroll(e);
-    };
+      window.ontouchstart = (e) => {
+        this.handleTouchStart(e);
+      };
 
-    window.ontouchstart = (e) => {
-      this.handleTouchStart(e);
-    };
-
-    window.ontouchmove = (e) => {
-      this.handleTouchMove(e);
-    };
+      window.ontouchmove = (e) => {
+        this.handleTouchMove(e);
+      };
+    }
   }
 
   handleScroll = (e) => {
@@ -75,7 +77,10 @@ class Footer extends Component {
   };
 
   isPageBottom = () => {
-    return window.innerHeight + window.scrollY >= document.body.offsetHeight;
+    if (isBrowser()) {
+      return window.innerHeight + window.scrollY >= document.body.offsetHeight;
+    }
+    return false
   };
 
   toggleFooter = () => {
